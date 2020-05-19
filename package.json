@@ -1,0 +1,19 @@
+{
+  "name": "node-hospital-admin-back",
+  "version": "1.0.0",
+  "description": "Servidor Back-end de aplicación Hospital Admin de Angular Avanzado",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Luis R Carrillo",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongoose": "^5.9.15"
+  },
+  "devDependencies": {
+    "prettier": "^2.0.5"
+  }
+}
