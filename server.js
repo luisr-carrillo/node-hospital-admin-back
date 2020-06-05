@@ -8,6 +8,7 @@ const usuarioRoutes = require('./routes/usuario');
 const loginRoutes = require('./routes/login');
 const hospitalRoutes = require('./routes/hospital');
 const medicoRoutes = require('./routes/medico');
+const busquedaRoutes = require('./routes/busqueda');
 
 // Inicializar variables
 const app = express();
@@ -33,9 +34,12 @@ mongoose.connection.openUri(
 
 // Rutas
 app.use('/usuario', usuarioRoutes);
-app.use('/login', loginRoutes);
 app.use('/hospital', hospitalRoutes);
 app.use('/medico', medicoRoutes);
+
+app.use('/login', loginRoutes);
+app.use('/busqueda', busquedaRoutes);
+
 app.use('/', appRoutes);
 
 // Escuchar peticiones
