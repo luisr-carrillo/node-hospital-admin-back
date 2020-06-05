@@ -9,20 +9,46 @@ const mdAuth = require('../middlewares/autenticacion');
  * @desc Obtener todos los usuarios
  */
 app.get('/', (req, res, next) => {
-    Usuario.find({}, 'nombre email img role').exec((err, data) => {
-        if (err) {
-            return res.status(500).json({
-                ok: false,
-                mensaje: 'Error al cargar usuarios',
-                errores: err,
-            });
-        }
-
-        res.status(200).json({
-            ok: true,
-            usuarios: data,
+    const desde =
+        req.query.desde === 0 || !req.query.desde ? 0 : Number(req.query.desde);
+    if (Number.isNaN(desde)) {
+        return res.status(400).json({
+            ok: false,
+            errores: {
+                mensaje:
+                    'Solicitud mal formada, el parametro "desde" debe ser un numero',
+            },
         });
-    });
+    }
+
+    Usuario.find({}, 'nombre email img role')
+        .skip(desde)
+        .limit(5)
+        .exec((err, data) => {
+            if (err) {
+                return res.status(500).json({
+                    ok: false,
+                    mensaje: 'Error al cargar usuarios',
+                    errores: err,
+                });
+            }
+
+            Usuario.count({}, (err, conteo) => {
+                if (err) {
+                    return res.status(500).json({
+                        ok: false,
+                        mensaje: 'Error al obtener total de usuarios',
+                        errores: err,
+                    });
+                }
+
+                return res.status(200).json({
+                    ok: true,
+                    usuarios: data,
+                    total: conteo,
+                });
+            });
+        });
 });
 
 /**

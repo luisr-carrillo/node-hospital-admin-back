@@ -9,7 +9,21 @@ const mdAuth = require('../middlewares/autenticacion');
  */
 
 app.get('/', (req, res) => {
+    const desde =
+        req.query.desde === 0 || !req.query.desde ? 0 : Number(req.query.desde);
+    if (Number.isNaN(desde)) {
+        return res.status(400).json({
+            ok: false,
+            errores: {
+                mensaje:
+                    'Solicitud mal formada. El parametro "desde" debe ser un numero',
+            },
+        });
+    }
+
     Hospital.find({})
+        .skip(desde)
+        .limit(5)
         .populate('usuario', 'nombre email')
         .exec((err, hospitales) => {
             if (err) {
@@ -20,9 +34,19 @@ app.get('/', (req, res) => {
                 });
             }
 
-            return res.status(200).json({
-                ok: true,
-                hospitales,
+            Hospital.count({}, (err, conteo) => {
+                if (err) {
+                    return res.status(500).json({
+                        ok: false,
+                        mensaje: 'Error al obtener total de hospitales',
+                        errores: err,
+                    });
+                }
+                return res.status(200).json({
+                    ok: true,
+                    hospitales,
+                    total: conteo,
+                });
             });
         });
 });
