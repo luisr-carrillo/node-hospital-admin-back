@@ -6,6 +6,8 @@ const bodyParser = require('body-parser');
 const appRoutes = require('./routes/app');
 const usuarioRoutes = require('./routes/usuario');
 const loginRoutes = require('./routes/login');
+const hospitalRoutes = require('./routes/hospital');
+const medicoRoutes = require('./routes/medico');
 
 // Inicializar variables
 const app = express();
@@ -32,9 +34,11 @@ mongoose.connection.openUri(
 // Rutas
 app.use('/usuario', usuarioRoutes);
 app.use('/login', loginRoutes);
+app.use('/hospital', hospitalRoutes);
+app.use('/medico', medicoRoutes);
 app.use('/', appRoutes);
 
-// Escuchar peticioens
+// Escuchar peticiones
 app.listen(3000, () => {
     console.log('Servidor back-end: \x1b[32m%s\x1b[0m', 'ONLINE');
 });
