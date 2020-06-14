@@ -9,6 +9,8 @@ const loginRoutes = require('./routes/login');
 const hospitalRoutes = require('./routes/hospital');
 const medicoRoutes = require('./routes/medico');
 const busquedaRoutes = require('./routes/busqueda');
+const uploadRoutes = require('./routes/upload');
+const imagenesRoutes = require('./routes/imagenes');
 
 // Inicializar variables
 const app = express();
@@ -31,6 +33,10 @@ mongoose.connection.openUri(
         console.log('Conexión a mongodb: \x1b[32m%s\x1b[0m', 'ONLINE');
     }
 );
+// Server Index Config
+const serverIndex = require('serve-index');
+app.use(express.static(__dirname + '/'));
+app.use('/uploads', serverIndex(__dirname + '/uploads'));
 
 // Rutas
 app.use('/usuario', usuarioRoutes);
@@ -39,6 +45,8 @@ app.use('/medico', medicoRoutes);
 
 app.use('/login', loginRoutes);
 app.use('/busqueda', busquedaRoutes);
+app.use('/upload', uploadRoutes);
+app.use('/img', imagenesRoutes);
 
 app.use('/', appRoutes);
 

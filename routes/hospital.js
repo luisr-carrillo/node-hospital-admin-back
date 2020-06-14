@@ -108,7 +108,6 @@ app.put('/:id', mdAuth.verificaToken, (req, res) => {
             return res.status(404).json({
                 ok: false,
                 message: `No se encontro ningún hospital con el ID: ${id}`,
-                errores: err,
             });
         }
 
