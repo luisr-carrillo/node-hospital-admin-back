@@ -55,7 +55,7 @@ app.get('/', (req, res, next) => {
  * @desc Crear un nuevo usuario
  */
 
-app.post('/', mdAuth.verificaToken, (req, res) => {
+app.post('/', (req, res) => {
     const body = req.body;
     const { nombre, email, password, img, role } = body;
 
@@ -74,7 +74,11 @@ app.post('/', mdAuth.verificaToken, (req, res) => {
                 mensaje: 'Error al crear usuarios',
                 errores: err,
             });
+        
         }
+
+        usuarioCreado.password = ':)';
+
         res.status(201).json({
             ok: true,
             mensaje: 'Usuario creado correctamente',
