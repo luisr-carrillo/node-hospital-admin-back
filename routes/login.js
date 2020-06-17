@@ -53,7 +53,7 @@ app.post('/google', async (req, res) => {
                 res.status(200).json({
                     ok: true,
                     id: usuarioDB._id,
-                    usuarioDB,
+                    usuario: usuarioDB,
                     token,
                 });
             }
@@ -115,7 +115,7 @@ app.post('/', async (req, res) => {
         res.status(200).json({
             ok: true,
             id: usuarioDB._id,
-            usuarioDB,
+            usuario: usuarioDB,
             token,
         });
     } catch (err) {

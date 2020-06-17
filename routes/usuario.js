@@ -74,7 +74,6 @@ app.post('/', (req, res) => {
                 mensaje: 'Error al crear usuarios',
                 errores: err,
             });
-        
         }
 
         usuarioCreado.password = ':)';
@@ -132,7 +131,7 @@ app.put('/:id', mdAuth.verificaToken, (req, res) => {
             res.status(200).json({
                 ok: true,
                 mensaje: 'Usuario actualizado correctamente',
-                usuarioGuardado,
+                usuario: usuarioGuardado,
             });
         });
     });
@@ -166,7 +165,7 @@ app.delete('/:id', mdAuth.verificaToken, (req, res) => {
         res.status(200).json({
             ok: true,
             mensaje: 'Usuario eliminado correctamente',
-            usuarioEliminado,
+            usuario: usuarioEliminado,
         });
     });
 });
