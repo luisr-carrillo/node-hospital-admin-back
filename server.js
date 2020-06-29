@@ -66,6 +66,6 @@ app.use('/img', imagenesRoutes);
 app.use('/', appRoutes);
 
 // Escuchar peticiones
-app.listen(3000, () => {
-    console.log('Servidor back-end: \x1b[32m%s\x1b[0m', 'ONLINE');
+app.listen(5000, () => {
+    console.log('Servidor back-end: \x1b[32m%s\x1b[0m', 'ONLINE en puerto 5000');
 });
