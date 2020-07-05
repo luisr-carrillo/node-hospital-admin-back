@@ -5,9 +5,36 @@ const Hospital = require('../models/hospital');
 const mdAuth = require('../middlewares/autenticacion');
 
 /**
+ * @desc GET de hospital por ID
+ */
+app.get('/:id', (req, res) => {
+    const id = req.params.id;
+    Hospital.findById(id)
+        .populate('usuario', 'nombre img email')
+        .exec((err, hospital) => {
+            if (err) {
+                return res.status(500).json({
+                    ok: false,
+                    mensaje: 'Hubo un problema al obtener el hospital',
+                    errors: err,
+                });
+            }
+            if (!hospital) {
+                return res.status(400).json({
+                    ok: false,
+                    mensaje: `No se encontro el hospital`,
+                    errors: {
+                        message: `No se encontro ningún hospital con el ID: ${id}`,
+                    },
+                });
+            }
+            return res.status(200).json({ ok: true, hospital: hospital });
+        });
+});
+
+/**
  * @desc GET de hospitales
  */
-
 app.get('/', (req, res) => {
     const desde =
         req.query.desde === 0 || !req.query.desde ? 0 : Number(req.query.desde);
@@ -164,7 +191,7 @@ app.delete('/:id', mdAuth.verificaToken, (req, res) => {
         return res.status(200).json({
             ok: true,
             message: 'Hospital eliminado correctamente',
-            hospitalEliminado,
+            hospital: hospitalEliminado,
             deletedBy: req.usuario,
         });
     });
