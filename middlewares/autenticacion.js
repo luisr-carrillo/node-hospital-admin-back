@@ -24,3 +24,33 @@ exports.verificaToken = function (req, res, next) {
         next();
     });
 };
+exports.verificaAdmin = function (req, res, next) {
+    const usuario = req.usuario;
+
+    if (usuario.role === 'ADMIN_ROLE') {
+        next();
+    } else {
+        return res.status(401).json({
+            ok: false,
+            mensaje: 'El usuario es incorrecto',
+            errores: {
+                message: 'No esta autorizado para realizar esta acción',
+            },
+        });
+    }
+};
+exports.verificaUsuario = function (req, res, next) {
+    const usuario = req.usuario;
+    const id = req.params.id;
+    if (usuario.role === 'ADMIN_ROLE' || usuario._id === id) {
+        next();
+    } else {
+        return res.status(401).json({
+            ok: false,
+            mensaje: 'El usuario es incorrecto',
+            errores: {
+                message: 'Acción autorizada solamente en su cuenta',
+            },
+        });
+    }
+};

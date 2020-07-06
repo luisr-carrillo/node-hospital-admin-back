@@ -91,7 +91,7 @@ app.post('/', (req, res) => {
  * @desc Actualizar información de usuario por ID
  */
 
-app.put('/:id', mdAuth.verificaToken, (req, res) => {
+app.put('/:id', [mdAuth.verificaToken, mdAuth.verificaUsuario], (req, res) => {
     const { id } = req.params;
     const { nombre, email, role } = req.body;
 
@@ -141,7 +141,7 @@ app.put('/:id', mdAuth.verificaToken, (req, res) => {
  * @desc Eliminar usuario por ID
  */
 
-app.delete('/:id', mdAuth.verificaToken, (req, res) => {
+app.delete('/:id', [mdAuth.verificaToken, mdAuth.verificaAdmin], (req, res) => {
     const { id } = req.params;
 
     Usuario.findByIdAndRemove(id, (err, usuarioEliminado) => {

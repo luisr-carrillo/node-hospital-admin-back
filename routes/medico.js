@@ -5,7 +5,7 @@ const Medico = require('../models/medico');
 const mdAuth = require('../middlewares/autenticacion');
 
 /**
- * @desc GET de hospital por ID
+ * @desc GET de Medico por ID
  */
 app.get('/:id', (req, res) => {
     const id = req.params.id;
