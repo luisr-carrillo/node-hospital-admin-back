@@ -3,6 +3,8 @@ const jwt = require('jsonwebtoken');
 const express = require('express');
 
 const app = express();
+
+const mdAuth = require('../middlewares/autenticacion');
 const Usuario = require('../models/usuario');
 
 const SEED = require('../config/config').SEED;
@@ -31,7 +33,17 @@ async function verify(token) {
         payload,
     };
 }
-// verify().catch(console.error);
+
+app.get('/renuevatoken', mdAuth.verificaToken, (req, res) => {
+    const token = jwt.sign({ usuario: req.usuario }, SEED, {
+        expiresIn: 14400,
+    });
+
+    return res.status(200).json({
+        ok: true,
+        token,
+    });
+});
 
 app.post('/google', async (req, res) => {
     try {
@@ -137,9 +149,9 @@ function obtenerMenu(role) {
             submenu: [
                 { titulo: 'Dashboard', url: '/dashboard' },
                 { titulo: 'ProgressBar', url: '/progress' },
-                { titulo: 'Graphics1', url: '/graphics1' },
-                { titulo: 'Promesas', url: '/promesas' },
-                { titulo: 'RxJS', url: '/rxjs' },
+                { titulo: 'Graphics', url: '/graphics' },
+                // { titulo: 'Promesas', url: '/promesas' },
+                // { titulo: 'RxJS', url: '/rxjs' },
             ],
         },
         {
