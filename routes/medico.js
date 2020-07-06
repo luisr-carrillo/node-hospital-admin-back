@@ -5,6 +5,35 @@ const Medico = require('../models/medico');
 const mdAuth = require('../middlewares/autenticacion');
 
 /**
+ * @desc GET de hospital por ID
+ */
+app.get('/:id', (req, res) => {
+    const id = req.params.id;
+    Medico.findById(id)
+        .populate('usuario', 'nombre img email')
+        .populate('hospital')
+        .exec((err, medico) => {
+            if (err) {
+                return res.status(500).json({
+                    ok: false,
+                    mensaje: 'Hubo un problema al obtener el medico',
+                    errors: err,
+                });
+            }
+            if (!medico) {
+                return res.status(400).json({
+                    ok: false,
+                    mensaje: `No se encontro el medico`,
+                    errors: {
+                        message: `No se encontro ningún medico con el ID: ${id}`,
+                    },
+                });
+            }
+            return res.status(200).json({ ok: true, medico: medico });
+        });
+});
+
+/**
  * @desc Función para obtener todos los medicos
  */
 app.get('/', (req, res) => {
@@ -76,7 +105,7 @@ app.post('/', mdAuth.verificaToken, (req, res) => {
         return res.status(201).json({
             ok: true,
             message: 'Medico creado correctamente',
-            hospital: medicoCreado,
+            medico: medicoCreado,
             createdBy: req.usuario,
         });
     });
@@ -130,7 +159,7 @@ app.put('/:id', mdAuth.verificaToken, (req, res) => {
             return res.status(200).json({
                 ok: true,
                 message: 'Medico actualizado correctamente',
-                hospital: medicoGuardado,
+                medico: medicoGuardado,
                 updatedBy: req.usuario,
             });
         });
@@ -169,7 +198,7 @@ app.delete('/:id', mdAuth.verificaToken, (req, res) => {
         return res.status(200).json({
             ok: true,
             message: 'Medico eliminado correctamente',
-            medicoEliminado,
+            medico: medicoEliminado,
             deletedBy: req.usuario,
         });
     });
